@@ -42,6 +42,7 @@ const tootajaController = require("../controllers/tootajaController");
  *       404:
  *         description: Работник не найден
  */
+
 router.patch("/:id", verifyToken, isAdmin, tootajaController.updateTootaja);
 
 /**
