@@ -12,15 +12,15 @@ const models = initModels(sequelize);
 app.use(express.json());
 
 // Маршруты
-const authRoutes = require("./routes/auth.routes");
-const klientRoutes = require("./routes/klient.routes");
-const toodeRoutes = require("./routes/toode.routes");
-const lepingRoutes = require("./routes/leping.routes");
+const authRoutes = require("./routes/authRoutes");
+//const klientRoutes = require("./routes/klient.routes");
+//const toodeRoutes = require("./routes/toode.routes");
+//const lepingRoutes = require("./routes/leping.routes");
 
 app.use("/api/auth", authRoutes);
-app.use("/api/clients", klientRoutes);
-app.use("/api/products", toodeRoutes);
-app.use("/api/contracts", lepingRoutes);
+//app.use("/api/clients", klientRoutes);
+//app.use("/api/products", toodeRoutes);
+//app.use("/api/contracts", lepingRoutes);
 
 // Порт
 const PORT = process.env.PORT || 3000;
