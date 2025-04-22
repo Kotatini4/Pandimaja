@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { verifyToken, isAdmin } = require("../middleware/authMiddleware");
+const { verifyToken, isUserOrAdmin } = require("../middleware/authMiddleware");
 const tootajaController = require("../controllers/tootajaController");
 
 /**
@@ -79,6 +79,6 @@ router.patch("/:id", verifyToken, isAdmin, tootajaController.updateTootaja);
  *                     type: integer
  */
 // Получить список всех работников
-router.get("/", verifyToken, isAdmin, tootajaController.getAllTootajad);
+router.get("/", verifyToken, isUserOrAdmin, tootajaController.getAllTootajad);
 
 module.exports = router;
