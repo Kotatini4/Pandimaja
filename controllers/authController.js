@@ -14,6 +14,27 @@ exports.register = async (req, res) => {
             .json({ message: "Please fill all required fields." });
     }
 
+    // Проверка длины kood
+    if (kood.length !== 11) {
+        return res
+            .status(400)
+            .json({ message: "Kood must be exactly 11 characters long." });
+    }
+
+    // Проверка длины пароля
+    if (pass.length < 6) {
+        return res
+            .status(400)
+            .json({ message: "Password must be at least 6 characters long." });
+    }
+
+    // Проверка допустимых ролей
+    if (![1, 2].includes(role_id)) {
+        return res.status(400).json({
+            message: "Invalid role_id. Only 1 (admin) or 2 (user) allowed.",
+        });
+    }
+
     try {
         const existingUser = await models.tootaja.findOne({ where: { kood } });
         if (existingUser) {
@@ -56,6 +77,11 @@ exports.login = async (req, res) => {
 
         if (!user) {
             return res.status(400).json({ message: "Invalid credentials." });
+        }
+
+        // Проверка если работник не активный (NA роль)
+        if (user.role_id === 3) {
+            return res.status(403).json({ message: "User is deactivated." });
         }
 
         const isPasswordValid = await bcrypt.compare(pass, user.pass);
