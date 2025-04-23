@@ -64,12 +64,10 @@ exports.searchKlients = async (req, res) => {
         }
 
         if (Object.keys(whereClause).length === 0) {
-            return res
-                .status(400)
-                .json({
-                    message:
-                        "Please provide at least one search parameter (nimi, perekonnanimi, or kood).",
-                });
+            return res.status(400).json({
+                message:
+                    "Please provide at least one search parameter (nimi, perekonnanimi, or kood).",
+            });
         }
 
         const klients = await models.klient.findAll({ where: whereClause });

@@ -1,10 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const {
-    verifyToken,
-    isAdmin,
-    isUserOrAdmin,
-} = require("../middleware/authMiddleware");
 const klientController = require("../controllers/klientController");
 
 /**
@@ -20,8 +15,6 @@ const klientController = require("../controllers/klientController");
  *   post:
  *     summary: Добавить нового клиента
  *     tags: [Klient]
- *     security:
- *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -45,11 +38,14 @@ const klientController = require("../controllers/klientController");
  *                 type: string
  *               status:
  *                 type: string
+ *                 enum:
+ *                   - active
+ *                   - blocked
  *     responses:
  *       201:
  *         description: Клиент успешно добавлен
  */
-router.post("/", verifyToken, isUserOrAdmin, klientController.createKlient);
+router.post("/", klientController.createKlient);
 
 /**
  * @swagger
@@ -57,13 +53,11 @@ router.post("/", verifyToken, isUserOrAdmin, klientController.createKlient);
  *   get:
  *     summary: Получить всех клиентов
  *     tags: [Klient]
- *     security:
- *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Список клиентов
  */
-router.get("/", verifyToken, isUserOrAdmin, klientController.getAllKlients);
+router.get("/", klientController.getAllKlients);
 
 /**
  * @swagger
@@ -71,8 +65,6 @@ router.get("/", verifyToken, isUserOrAdmin, klientController.getAllKlients);
  *   get:
  *     summary: Найти клиента по имени, фамилии или коду
  *     tags: [Klient]
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - name: nimi
  *         in: query
@@ -90,12 +82,7 @@ router.get("/", verifyToken, isUserOrAdmin, klientController.getAllKlients);
  *       200:
  *         description: Клиенты найдены
  */
-router.get(
-    "/search",
-    verifyToken,
-    isUserOrAdmin,
-    klientController.searchKlients
-);
+router.get("/search", klientController.searchKlients);
 
 /**
  * @swagger
@@ -103,8 +90,6 @@ router.get(
  *   get:
  *     summary: Получить клиента по ID
  *     tags: [Klient]
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -116,7 +101,7 @@ router.get(
  *       200:
  *         description: Информация о клиенте
  */
-router.get("/:id", verifyToken, isUserOrAdmin, klientController.getKlientById);
+router.get("/:id", klientController.getKlientById);
 
 /**
  * @swagger
@@ -124,8 +109,6 @@ router.get("/:id", verifyToken, isUserOrAdmin, klientController.getKlientById);
  *   patch:
  *     summary: Обновить данные клиента
  *     tags: [Klient]
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -150,10 +133,15 @@ router.get("/:id", verifyToken, isUserOrAdmin, klientController.getKlientById);
  *                 type: string
  *               status:
  *                 type: string
+ *                 enum:
+ *                   - active
+ *                   - blocked
  *     responses:
  *       200:
- *         description: Данные клиента обновлены
+ *         description: Данные клиента успешно обновлены
+ *       404:
+ *         description: Клиент не найден
  */
-router.patch("/:id", verifyToken, isAdmin, klientController.updateKlient);
+router.patch("/:id", klientController.updateKlient);
 
 module.exports = router;

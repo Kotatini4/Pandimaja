@@ -1,6 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const { verifyToken, isUserOrAdmin } = require("../middleware/authMiddleware");
+const {
+    verifyToken,
+    isAdmin,
+    isUserOrAdmin,
+} = require("../middleware/authMiddleware");
 const tootajaController = require("../controllers/tootajaController");
 
 /**
