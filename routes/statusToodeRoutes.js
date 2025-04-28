@@ -1,0 +1,116 @@
+const express = require("express");
+const router = express.Router();
+const statusToodeController = require("../controllers/statusToodeController");
+
+/**
+ * @swagger
+ * tags:
+ *   name: StatusToode
+ *   description: API для управления статусами товаров
+ */
+
+/**
+ * @swagger
+ * /api/status_toode:
+ *   post:
+ *     summary: Создать новый статус
+ *     tags: [StatusToode]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - nimetus
+ *             properties:
+ *               nimetus:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Статус успешно создан
+ */
+router.post("/", statusToodeController.createStatus);
+
+/**
+ * @swagger
+ * /api/status_toode:
+ *   get:
+ *     summary: Получить список всех статусов
+ *     tags: [StatusToode]
+ *     responses:
+ *       200:
+ *         description: Список статусов
+ */
+router.get("/", statusToodeController.getAllStatuses);
+
+/**
+ * @swagger
+ * /api/status_toode/{id}:
+ *   get:
+ *     summary: Получить статус по ID
+ *     tags: [StatusToode]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Информация о статусе
+ *       404:
+ *         description: Статус не найден
+ */
+router.get("/:id", statusToodeController.getStatusById);
+
+/**
+ * @swagger
+ * /api/status_toode/{id}:
+ *   put:
+ *     summary: Обновить статус по ID
+ *     tags: [StatusToode]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nimetus:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Статус успешно обновлён
+ *       404:
+ *         description: Статус не найден
+ */
+router.put("/:id", statusToodeController.updateStatus);
+
+/**
+ * @swagger
+ * /api/status_toode/{id}:
+ *   delete:
+ *     summary: Удалить статус по ID
+ *     tags: [StatusToode]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       204:
+ *         description: Статус успешно удалён
+ *       404:
+ *         description: Статус не найден
+ */
+router.delete("/:id", statusToodeController.deleteStatus);
+
+module.exports = router;

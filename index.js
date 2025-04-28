@@ -10,7 +10,8 @@ const swaggerSpec = require("./swagger");
 const authRoutes = require("./routes/authRoutes");
 const tootajaRoutes = require("./routes/tootajaRoutes");
 const klientRoutes = require("./routes/klientRoutes");
-
+const toodeRoutes = require("./routes/toodeRoutes");
+const statusToodeRoutes = require("./routes/statusToodeRoutes");
 const models = initModels(sequelize);
 
 // Middleware
@@ -18,6 +19,8 @@ app.use(express.json());
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Маршруты
+app.use("/api/status_toode", statusToodeRoutes);
+app.use("/api/toode", toodeRoutes);
 app.use("/api/klient", klientRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/tootaja", tootajaRoutes);
