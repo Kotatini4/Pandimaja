@@ -5,6 +5,13 @@ const { verifyToken, isAdmin } = require("../middleware/authMiddleware");
 
 /**
  * @swagger
+ * tags:
+ *   name: Auth
+ *   description: API для создания работников и верификации
+ */
+
+/**
+ * @swagger
  * /api/auth/register:
  *   post:
  *     summary: Регистрация нового сотрудника (только для администратора)
