@@ -17,6 +17,7 @@ const models = initModels(sequelize);
 // Middleware
 app.use(express.json());
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use("/uploads", express.static("public/uploads"));
 
 // Маршруты
 app.use("/api/status_toode", statusToodeRoutes);
