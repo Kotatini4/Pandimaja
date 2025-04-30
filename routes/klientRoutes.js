@@ -1,11 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const klientController = require("../controllers/klientController");
-const {
-    verifyToken,
-    isUserOrAdmin,
-    isAdmin,
-} = require("../middleware/authMiddleware");
+const { verifyToken, isUserOrAdmin } = require("../middleware/authMiddleware");
 
 /**
  * @swagger

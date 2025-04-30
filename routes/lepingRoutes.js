@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const lepingController = require("../controllers/lepingController");
-
+const { verifyToken, isUserOrAdmin } = require("../middleware/authMiddleware");
 /**
  * @swagger
  * tags:
@@ -52,7 +52,7 @@ const lepingController = require("../controllers/lepingController");
  *       201:
  *         description: Договор создан
  */
-router.post("/", lepingController.createLeping);
+router.post("/", verifyToken, isUserOrAdmin, lepingController.createLeping);
 
 /**
  * @swagger
@@ -64,7 +64,7 @@ router.post("/", lepingController.createLeping);
  *       200:
  *         description: Список договоров
  */
-router.get("/", lepingController.getAllLepingud);
+router.get("/", verifyToken, isUserOrAdmin, lepingController.getAllLepingud);
 
 /**
  * @swagger
@@ -84,7 +84,7 @@ router.get("/", lepingController.getAllLepingud);
  *       404:
  *         description: Договор не найден
  */
-router.get("/:id", lepingController.getLepingById);
+router.get("/:id", verifyToken, isUserOrAdmin, lepingController.getLepingById);
 
 /**
  * @swagger
@@ -117,7 +117,7 @@ router.get("/:id", lepingController.getLepingById);
  *       404:
  *         description: Договор не найден
  */
-router.put("/:id", lepingController.updateLeping);
+router.put("/:id", verifyToken, isUserOrAdmin, lepingController.updateLeping);
 
 /**
  * @swagger
@@ -137,6 +137,11 @@ router.put("/:id", lepingController.updateLeping);
  *       404:
  *         description: Договор не найден
  */
-router.delete("/:id", lepingController.deleteLeping);
+router.delete(
+    "/:id",
+    verifyToken,
+    isUserOrAdmin,
+    lepingController.deleteLeping
+);
 
 module.exports = router;

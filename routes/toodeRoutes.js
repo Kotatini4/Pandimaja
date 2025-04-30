@@ -3,8 +3,9 @@ const router = express.Router();
 const toodeController = require("../controllers/toodeController");
 const multer = require("multer");
 const path = require("path");
+const { verifyToken, isUserOrAdmin } = require("../middleware/authMiddleware");
 
-// ✅ Сначала создаём storage и upload
+// Сначала создаём storage и upload
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, "public/uploads/");
@@ -52,7 +53,13 @@ const upload = multer({ storage });
  *       201:
  *         description: Товар успешно создан
  */
-router.post("/", upload.single("image"), toodeController.createToode);
+router.post(
+    "/",
+    verifyToken,
+    isUserOrAdmin,
+    upload.single("image"),
+    toodeController.createToode
+);
 
 /**
  * @swagger
@@ -64,7 +71,7 @@ router.post("/", upload.single("image"), toodeController.createToode);
  *       200:
  *         description: Список товаров
  */
-router.get("/", toodeController.getAllTooded);
+router.get("/", verifyToken, isUserOrAdmin, toodeController.getAllTooded);
 
 /**
  * @swagger
@@ -82,7 +89,7 @@ router.get("/", toodeController.getAllTooded);
  *       200:
  *         description: Список найденных товаров
  */
-router.get("/search", toodeController.searchTooded);
+router.get("/search", verifyToken, isUserOrAdmin, toodeController.searchTooded);
 
 /**
  * @swagger
@@ -102,7 +109,7 @@ router.get("/search", toodeController.searchTooded);
  *       404:
  *         description: Товар не найден
  */
-router.get("/:id", toodeController.getToodeById);
+router.get("/:id", verifyToken, isUserOrAdmin, toodeController.getToodeById);
 
 /**
  * @swagger
@@ -141,7 +148,13 @@ router.get("/:id", toodeController.getToodeById);
  *       404:
  *         description: Товар не найден
  */
-router.put("/:id", upload.single("image"), toodeController.updateToode);
+router.put(
+    "/:id",
+    verifyToken,
+    isUserOrAdmin,
+    upload.single("image"),
+    toodeController.updateToode
+);
 
 /**
  * @swagger
@@ -161,7 +174,7 @@ router.put("/:id", upload.single("image"), toodeController.updateToode);
  *       404:
  *         description: Товар не найден
  */
-router.delete("/:id", toodeController.deleteToode);
+router.delete("/:id", verifyToken, isUserOrAdmin, toodeController.deleteToode);
 
 /**
  * @swagger
@@ -181,6 +194,11 @@ router.delete("/:id", toodeController.deleteToode);
  *       404:
  *         description: Товары с таким статусом не найдены
  */
-router.get("/status/:status_id", toodeController.getToodedByStatus);
+router.get(
+    "/status/:status_id",
+    verifyToken,
+    isUserOrAdmin,
+    toodeController.getToodedByStatus
+);
 
 module.exports = router;

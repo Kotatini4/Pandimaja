@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const statusToodeController = require("../controllers/statusToodeController");
-
+const { verifyToken, isUserOrAdmin } = require("../middleware/authMiddleware");
 /**
  * @swagger
  * tags:
@@ -30,7 +30,12 @@ const statusToodeController = require("../controllers/statusToodeController");
  *       201:
  *         description: Статус успешно создан
  */
-router.post("/", statusToodeController.createStatus);
+router.post(
+    "/",
+    verifyToken,
+    isUserOrAdmin,
+    statusToodeController.createStatus
+);
 
 /**
  * @swagger
@@ -42,7 +47,12 @@ router.post("/", statusToodeController.createStatus);
  *       200:
  *         description: Список статусов
  */
-router.get("/", statusToodeController.getAllStatuses);
+router.get(
+    "/",
+    verifyToken,
+    isUserOrAdmin,
+    statusToodeController.getAllStatuses
+);
 
 /**
  * @swagger
@@ -62,7 +72,12 @@ router.get("/", statusToodeController.getAllStatuses);
  *       404:
  *         description: Статус не найден
  */
-router.get("/:id", statusToodeController.getStatusById);
+router.get(
+    "/:id",
+    verifyToken,
+    isUserOrAdmin,
+    statusToodeController.getStatusById
+);
 
 /**
  * @swagger
@@ -91,7 +106,12 @@ router.get("/:id", statusToodeController.getStatusById);
  *       404:
  *         description: Статус не найден
  */
-router.put("/:id", statusToodeController.updateStatus);
+router.put(
+    "/:id",
+    verifyToken,
+    isUserOrAdmin,
+    statusToodeController.updateStatus
+);
 
 /**
  * @swagger
@@ -111,6 +131,11 @@ router.put("/:id", statusToodeController.updateStatus);
  *       404:
  *         description: Статус не найден
  */
-router.delete("/:id", statusToodeController.deleteStatus);
+router.delete(
+    "/:id",
+    verifyToken,
+    isUserOrAdmin,
+    statusToodeController.deleteStatus
+);
 
 module.exports = router;
