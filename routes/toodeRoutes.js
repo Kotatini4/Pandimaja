@@ -21,9 +21,43 @@ const upload = multer({ storage });
 
 /**
  * @swagger
+ * /api/toode/laos:
+ *   get:
+ *     summary: Получить все товары со статусом "Laos" Это для просмотра товара продающегося в магазине, для всех!
+ *     tags: [Toode]
+ *     responses:
+ *       200:
+ *         description: Список товаров на складе
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   toode_id:
+ *                     type: integer
+ *                   nimetus:
+ *                     type: string
+ *                   kirjaldus:
+ *                     type: string
+ *                   status_id:
+ *                     type: integer
+ *                   image:
+ *                     type: string
+ *                   hind:
+ *                     type: number
+ *       500:
+ *         description: Ошибка при получении данных
+ */
+
+router.get("/laos", toodeController.getToodedLaos);
+
+/**
+ * @swagger
  * /api/toode:
  *   post:
- *     summary: Создать новый товар с изображением
+ *     summary: Создать новый товар с изображением (только для администратора или работника)
  *     tags: [Toode]
  *     consumes:
  *       - multipart/form-data
@@ -65,7 +99,7 @@ router.post(
  * @swagger
  * /api/toode:
  *   get:
- *     summary: Получить список всех товаров
+ *     summary: Получить список всех товаров (только для администратора или работника)
  *     tags: [Toode]
  *     responses:
  *       200:
@@ -77,7 +111,7 @@ router.get("/", verifyToken, isUserOrAdmin, toodeController.getAllTooded);
  * @swagger
  * /api/toode/search:
  *   get:
- *     summary: Поиск товара по наименованию
+ *     summary: Поиск товара по наименованию (только для администратора или работника)
  *     tags: [Toode]
  *     parameters:
  *       - name: nimetus
@@ -95,7 +129,7 @@ router.get("/search", verifyToken, isUserOrAdmin, toodeController.searchTooded);
  * @swagger
  * /api/toode/{id}:
  *   get:
- *     summary: Получить товар по ID
+ *     summary: Получить товар по ID (только для администратора или работника)
  *     tags: [Toode]
  *     parameters:
  *       - name: id
@@ -115,7 +149,7 @@ router.get("/:id", verifyToken, isUserOrAdmin, toodeController.getToodeById);
  * @swagger
  * /api/toode/{id}:
  *   put:
- *     summary: Обновить товар и/или изображение
+ *     summary: Обновить товар и/или изображение (только для администратора или работника)
  *     tags: [Toode]
  *     consumes:
  *       - multipart/form-data
@@ -160,7 +194,7 @@ router.put(
  * @swagger
  * /api/toode/{id}:
  *   delete:
- *     summary: Удалить товар по ID
+ *     summary: Удалить товар по ID (только для администратора или работника)
  *     tags: [Toode]
  *     parameters:
  *       - name: id
@@ -180,7 +214,7 @@ router.delete("/:id", verifyToken, isUserOrAdmin, toodeController.deleteToode);
  * @swagger
  * /api/toode/status/{status_id}:
  *   get:
- *     summary: Получить список товаров по статусу
+ *     summary: Получить список товаров по статусу (только для администратора или работника)
  *     tags: [Toode]
  *     parameters:
  *       - name: status_id

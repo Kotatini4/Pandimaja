@@ -14,7 +14,7 @@ const { verifyToken, isUserOrAdmin } = require("../middleware/authMiddleware");
  * @swagger
  * /api/klient:
  *   post:
- *     summary: Добавить нового клиента
+ *     summary: Добавить нового клиента (только для администратора или работника)
  *     tags: [Klient]
  *     requestBody:
  *       required: true
@@ -52,7 +52,7 @@ router.post("/", verifyToken, isUserOrAdmin, klientController.createKlient);
  * @swagger
  * /api/klient:
  *   get:
- *     summary: Получить всех клиентов
+ *     summary: Получить всех клиентов (только для администратора или работника)
  *     tags: [Klient]
  *     responses:
  *       200:
@@ -64,7 +64,7 @@ router.get("/", verifyToken, isUserOrAdmin, klientController.getAllKlients);
  * @swagger
  * /api/klient/search:
  *   get:
- *     summary: Найти клиента по имени, фамилии или коду
+ *     summary: Найти клиента по имени, фамилии или коду (только для администратора или работника)
  *     tags: [Klient]
  *     parameters:
  *       - name: nimi
@@ -94,7 +94,7 @@ router.get(
  * @swagger
  * /api/klient/{id}:
  *   get:
- *     summary: Получить клиента по ID
+ *     summary: Получить клиента по ID (только для администратора или работника)
  *     tags: [Klient]
  *     parameters:
  *       - in: path
@@ -113,7 +113,7 @@ router.get("/:id", verifyToken, isUserOrAdmin, klientController.getKlientById);
  * @swagger
  * /api/klient/{id}:
  *   patch:
- *     summary: Обновить данные клиента
+ *     summary: Обновить данные клиента (только для администратора или работника)
  *     tags: [Klient]
  *     parameters:
  *       - in: path

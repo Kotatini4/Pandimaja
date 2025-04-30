@@ -13,7 +13,8 @@ const { verifyToken, isUserOrAdmin } = require("../middleware/authMiddleware");
  * @swagger
  * /api/leping:
  *   post:
- *     summary: Создать новый договор
+ *     summary: Создать новый договор (только для администратора или работника)
+ *              если клиент имеет статус "blocked ", тогда создание договора невозможно
  *     tags: [Leping]
  *     requestBody:
  *       required: true
@@ -58,7 +59,7 @@ router.post("/", verifyToken, isUserOrAdmin, lepingController.createLeping);
  * @swagger
  * /api/leping:
  *   get:
- *     summary: Получить все договоры
+ *     summary: Получить все договоры (только для администратора или работника)
  *     tags: [Leping]
  *     responses:
  *       200:
@@ -70,7 +71,7 @@ router.get("/", verifyToken, isUserOrAdmin, lepingController.getAllLepingud);
  * @swagger
  * /api/leping/{id}:
  *   get:
- *     summary: Получить договор по ID
+ *     summary: Получить договор по ID (только для администратора или работника)
  *     tags: [Leping]
  *     parameters:
  *       - name: id
@@ -90,7 +91,7 @@ router.get("/:id", verifyToken, isUserOrAdmin, lepingController.getLepingById);
  * @swagger
  * /api/leping/{id}:
  *   put:
- *     summary: Обновить договор
+ *     summary: Обновить договор (только для администратора или работника)
  *     tags: [Leping]
  *     parameters:
  *       - name: id
@@ -123,7 +124,7 @@ router.put("/:id", verifyToken, isUserOrAdmin, lepingController.updateLeping);
  * @swagger
  * /api/leping/{id}:
  *   delete:
- *     summary: Удалить договор
+ *     summary: Удалить договор (только для администратора или работника)
  *     tags: [Leping]
  *     parameters:
  *       - name: id

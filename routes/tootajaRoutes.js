@@ -11,7 +11,7 @@ const tootajaController = require("../controllers/tootajaController");
  * @swagger
  * /api/tootaja/{id}:
  *   patch:
- *     summary: Изменение данных работника (только для администратора)
+ *     summary: Изменение данных работника (только для администратора или работника)
  *     tags: [Tootaja]
  *     security:
  *       - bearerAuth: []
@@ -53,7 +53,7 @@ router.patch("/:id", verifyToken, isAdmin, tootajaController.updateTootaja);
  * @swagger
  * /api/tootaja:
  *   get:
- *     summary: Получить список всех работников (только для администратора)
+ *     summary: Получить список всех работников (только для администратора или работника)
  *     tags: [Tootaja]
  *     security:
  *       - bearerAuth: []

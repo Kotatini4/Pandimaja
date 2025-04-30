@@ -151,3 +151,25 @@ exports.getToodedByStatus = async (req, res) => {
         res.status(500).json({ message: "Error fetching products by status." });
     }
 };
+
+exports.getToodedLaos = async (req, res) => {
+    try {
+        const tooded = await models.toode.findAll({
+            include: [
+                {
+                    model: models.status_toode,
+                    as: "status",
+                    where: { nimetus: "Laos" },
+                    attributes: [],
+                },
+            ],
+        });
+
+        res.status(200).json(tooded);
+    } catch (err) {
+        console.error("Ошибка:", err);
+        res.status(500).json({
+            message: "Ошибка при получении товаров со статусом 'Laos'.",
+        });
+    }
+};

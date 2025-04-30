@@ -13,7 +13,7 @@ const { verifyToken, isUserOrAdmin } = require("../middleware/authMiddleware");
  * @swagger
  * /api/status_toode:
  *   post:
- *     summary: Создать новый статус
+ *     summary: Создать новый статус (только для администратора или работника)
  *     tags: [StatusToode]
  *     requestBody:
  *       required: true
@@ -41,7 +41,7 @@ router.post(
  * @swagger
  * /api/status_toode:
  *   get:
- *     summary: Получить список всех статусов
+ *     summary: Получить список всех статусов (только для администратора или работника)
  *     tags: [StatusToode]
  *     responses:
  *       200:
@@ -58,7 +58,7 @@ router.get(
  * @swagger
  * /api/status_toode/{id}:
  *   get:
- *     summary: Получить статус по ID
+ *     summary: Получить статус по ID (только для администратора или работника)
  *     tags: [StatusToode]
  *     parameters:
  *       - name: id
@@ -83,7 +83,7 @@ router.get(
  * @swagger
  * /api/status_toode/{id}:
  *   put:
- *     summary: Обновить статус по ID
+ *     summary: Обновить статус по ID (только для администратора или работника)
  *     tags: [StatusToode]
  *     parameters:
  *       - name: id
@@ -117,7 +117,7 @@ router.put(
  * @swagger
  * /api/status_toode/{id}:
  *   delete:
- *     summary: Удалить статус по ID
+ *     summary: Удалить статус по ID (только для администратора или работника)
  *     tags: [StatusToode]
  *     parameters:
  *       - name: id

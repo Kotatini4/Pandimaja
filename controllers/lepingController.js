@@ -3,9 +3,25 @@ const initModels = require("../models/init-models");
 
 const models = initModels(sequelize);
 
-// Создание договора
 exports.createLeping = async (req, res) => {
+    const { klient_id } = req.body;
+
     try {
+        // Получаем клиента
+        const klient = await models.klient.findByPk(klient_id);
+
+        if (!klient) {
+            return res.status(404).json({ message: "Клиент не найден." });
+        }
+
+        // Проверяем статус
+        if (klient.status.toLowerCase() === "blocked") {
+            return res.status(403).json({
+                message: "Нельзя создать договор: клиент заблокирован.",
+            });
+        }
+
+        // Создание договора
         const leping = await models.leping.create(req.body);
         res.status(201).json(leping);
     } catch (err) {
