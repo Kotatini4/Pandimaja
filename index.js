@@ -12,6 +12,7 @@ const tootajaRoutes = require("./routes/tootajaRoutes");
 const klientRoutes = require("./routes/klientRoutes");
 const toodeRoutes = require("./routes/toodeRoutes");
 const statusToodeRoutes = require("./routes/statusToodeRoutes");
+const lepingRoutes = require("./routes/lepingRoutes");
 const models = initModels(sequelize);
 
 // Middleware
@@ -20,6 +21,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/uploads", express.static("public/uploads"));
 
 // Маршруты
+app.use("/api/leping", lepingRoutes);
 app.use("/api/status_toode", statusToodeRoutes);
 app.use("/api/toode", toodeRoutes);
 app.use("/api/klient", klientRoutes);

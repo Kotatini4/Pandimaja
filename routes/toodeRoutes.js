@@ -4,23 +4,32 @@ const toodeController = require("../controllers/toodeController");
 const multer = require("multer");
 const path = require("path");
 
-/**
- * @swagger
- * tags:
- *   name: Toode
- *   description: API для работы с товарами
- */
+// ✅ Сначала создаём storage и upload
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, "public/uploads/");
+    },
+    filename: function (req, file, cb) {
+        const uniqueName =
+            "toode_" + Date.now() + path.extname(file.originalname);
+        cb(null, uniqueName);
+    },
+});
+
+const upload = multer({ storage });
 
 /**
  * @swagger
  * /api/toode:
  *   post:
- *     summary: Создать новый товар
+ *     summary: Создать новый товар с изображением
  *     tags: [Toode]
+ *     consumes:
+ *       - multipart/form-data
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             required:
@@ -36,13 +45,14 @@ const path = require("path");
  *                 type: integer
  *               image:
  *                 type: string
+ *                 format: binary
  *               hind:
  *                 type: number
  *     responses:
  *       201:
  *         description: Товар успешно создан
  */
-router.post("/", toodeController.createToode);
+router.post("/", upload.single("image"), toodeController.createToode);
 
 /**
  * @swagger
@@ -98,8 +108,10 @@ router.get("/:id", toodeController.getToodeById);
  * @swagger
  * /api/toode/{id}:
  *   put:
- *     summary: Обновить товар по ID
+ *     summary: Обновить товар и/или изображение
  *     tags: [Toode]
+ *     consumes:
+ *       - multipart/form-data
  *     parameters:
  *       - name: id
  *         in: path
@@ -107,9 +119,8 @@ router.get("/:id", toodeController.getToodeById);
  *         schema:
  *           type: integer
  *     requestBody:
- *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             properties:
@@ -121,15 +132,16 @@ router.get("/:id", toodeController.getToodeById);
  *                 type: integer
  *               image:
  *                 type: string
+ *                 format: binary
  *               hind:
  *                 type: number
  *     responses:
  *       200:
- *         description: Товар обновлен
+ *         description: Товар обновлён
  *       404:
  *         description: Товар не найден
  */
-router.put("/:id", toodeController.updateToode);
+router.put("/:id", upload.single("image"), toodeController.updateToode);
 
 /**
  * @swagger
@@ -163,87 +175,12 @@ router.delete("/:id", toodeController.deleteToode);
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID статуса товара
  *     responses:
  *       200:
  *         description: Список товаров с указанным статусом
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   toode_id:
- *                     type: integer
- *                   nimetus:
- *                     type: string
- *                   kirjaldus:
- *                     type: string
- *                   status_id:
- *                     type: integer
- *                   image:
- *                     type: string
- *                   hind:
- *                     type: number
  *       404:
  *         description: Товары с таким статусом не найдены
  */
 router.get("/status/:status_id", toodeController.getToodedByStatus);
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, "public/uploads/");
-    },
-    filename: function (req, file, cb) {
-        const uniqueName =
-            "toode_" + Date.now() + path.extname(file.originalname);
-        cb(null, uniqueName);
-    },
-});
-
-const upload = multer({ storage });
-
-/**
- * @swagger
- * /api/toode/upload:
- *   post:
- *     summary: Загрузить изображение товара
- *     tags: [Toode]
- *     consumes:
- *       - multipart/form-data
- *     requestBody:
- *       required: true
- *       content:
- *         multipart/form-data:
- *           schema:
- *             type: object
- *             properties:
- *               image:
- *                 type: string
- *                 format: binary
- *     responses:
- *       200:
- *         description: Файл успешно загружен
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 image:
- *                   type: string
- *                   example: http://localhost:3000/uploads/toode_1714761234567.jpg
- *       400:
- *         description: Файл не был загружен
- */
-router.post("/upload", upload.single("image"), (req, res) => {
-    if (!req.file) {
-        return res.status(400).json({ message: "No file uploaded" });
-    }
-
-    const fullUrl = `${req.protocol}://${req.get("host")}/uploads/${
-        req.file.filename
-    }`;
-    res.status(200).json({ image: fullUrl });
-});
 module.exports = router;

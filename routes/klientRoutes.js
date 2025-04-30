@@ -1,6 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const klientController = require("../controllers/klientController");
+const {
+    verifyToken,
+    isUserOrAdmin,
+    isAdmin,
+} = require("../middleware/authMiddleware");
 
 /**
  * @swagger
@@ -45,7 +50,7 @@ const klientController = require("../controllers/klientController");
  *       201:
  *         description: Клиент успешно добавлен
  */
-router.post("/", klientController.createKlient);
+router.post("/", verifyToken, isUserOrAdmin, klientController.createKlient);
 
 /**
  * @swagger
@@ -57,7 +62,7 @@ router.post("/", klientController.createKlient);
  *       200:
  *         description: Список клиентов
  */
-router.get("/", klientController.getAllKlients);
+router.get("/", verifyToken, isUserOrAdmin, klientController.getAllKlients);
 
 /**
  * @swagger
@@ -82,7 +87,12 @@ router.get("/", klientController.getAllKlients);
  *       200:
  *         description: Клиенты найдены
  */
-router.get("/search", klientController.searchKlients);
+router.get(
+    "/search",
+    verifyToken,
+    isUserOrAdmin,
+    klientController.searchKlients
+);
 
 /**
  * @swagger
@@ -101,7 +111,7 @@ router.get("/search", klientController.searchKlients);
  *       200:
  *         description: Информация о клиенте
  */
-router.get("/:id", klientController.getKlientById);
+router.get("/:id", verifyToken, isUserOrAdmin, klientController.getKlientById);
 
 /**
  * @swagger
@@ -142,6 +152,6 @@ router.get("/:id", klientController.getKlientById);
  *       404:
  *         description: Клиент не найден
  */
-router.patch("/:id", klientController.updateKlient);
+router.patch("/:id", verifyToken, isUserOrAdmin, klientController.updateKlient);
 
 module.exports = router;

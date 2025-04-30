@@ -5,7 +5,8 @@ const { Op } = require("sequelize");
 const models = initModels(sequelize);
 
 exports.createToode = async (req, res) => {
-    const { nimetus, kirjaldus, status_id, image, hind } = req.body;
+    const { nimetus, kirjaldus, status_id, hind } = req.body;
+    const image = req.file ? `/uploads/${req.file.filename}` : null;
 
     if (!nimetus || !status_id || hind === undefined) {
         return res.status(400).json({
@@ -78,11 +79,11 @@ exports.getToodeById = async (req, res) => {
 
 exports.updateToode = async (req, res) => {
     const { id } = req.params;
-    const { nimetus, kirjaldus, status_id, image, hind } = req.body;
+    const { nimetus, kirjaldus, status_id, hind } = req.body;
+    const image = req.file ? `/uploads/${req.file.filename}` : null;
 
     try {
         const toode = await models.toode.findByPk(id);
-
         if (!toode) {
             return res.status(404).json({ message: "Product not found." });
         }
@@ -90,8 +91,8 @@ exports.updateToode = async (req, res) => {
         if (nimetus) toode.nimetus = nimetus;
         if (kirjaldus) toode.kirjaldus = kirjaldus;
         if (status_id) toode.status_id = status_id;
-        if (image) toode.image = image;
         if (hind !== undefined) toode.hind = hind;
+        if (image) toode.image = image; // Только если файл отправлен
 
         await toode.save();
 
